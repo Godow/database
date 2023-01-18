@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         [个人工具]移除广告、好用网站收藏
+// @name         【个人工具】移除广告、好用网站收藏
 // @namespace    http://tampermonkey.net/
-// @version      1.5
+// @version      0.1
 // @description  适用于 svip.bljiex.cc、www.ysgc.vip 拦截页面广告，谷歌广告
 // @author       Godow
 // @match        *://svip.bljiex.cc/*
