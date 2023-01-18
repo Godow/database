@@ -1,0 +1,73 @@
+// ==UserScript==
+// @name         [个人工具]移除广告、好用网站收藏
+// @namespace    http://tampermonkey.net/
+// @version      1.5
+// @description  适用于 svip.bljiex.cc、www.ysgc.vip 拦截页面广告，谷歌广告
+// @author       Godow
+// @match        *://svip.bljiex.cc/*
+// @match        *://www.ysgc.vip/*
+// @match        *://*/*
+// @run-at       document-body
+// @icon         https://goduck.cc/favicon.ico
+// @grant        none
+// @license MIT
+// ==/UserScript==
+
+
+const myHome = () => {
+    document.querySelectorAll("body *").forEach(i => i.remove());
+    const myLink = {
+        "影视工厂": "//www.ysgc.fun",
+        "BL解析": "//svip.bljiex.cc",
+        "照片转卡通": "//www.toonme.com",
+        "图片智能擦除": "//magicstudio.com/magiceraser",
+        "图片消除背景": "//www.remove.bg/zh",
+        "红白机游戏": "//www.yikm.net/",
+        "在线鼠标作图": "http://weavesilk.com/",
+    };
+
+    Object.keys(myLink).forEach(i => {
+        let a = document.createElement('a');
+        a.href = myLink[i];
+        a.appendChild(document.createTextNode(i));
+        a.style = "margin: 20px 50px;display: inline-block";
+        document.body.appendChild(a);
+    })
+}
+
+
+(function() {
+    'use strict';
+    const host = document.location.host;
+    let removeAdFn;
+    switch(host) {
+        case '0000.com':
+            myHome();
+            break;
+        // BL解析
+        case 'svip.bljiex.cc':
+            removeAdFn = () => {
+                document.querySelectorAll('#section~*')?.forEach(i => i.remove());
+            };
+            break;
+        // 影视工厂
+        case 'www.ysgc.vip':
+        case 'www.ysgc.fun':
+        case 'www.ysgc1.cc':
+        case 'www.ysgc2.cc':
+            removeAdFn = () => {
+                document.querySelectorAll('a[target="_blank"],#HMRichBox,#mhbottom_ad_box,#fulerbox,#hm_cpm_show,#fix_bottom_dom')?.forEach(i => i.remove());
+                document.querySelector(".col-lg-wide-75 > .myui-panel").style = "display: none";
+            };
+            break;
+        default:
+            // 删除谷歌广告
+            removeAdFn = () => {
+                document.querySelectorAll(".adsbygoogle").forEach(i => i.remove());
+            }
+            break;
+    }
+    if (removeAdFn) {
+        document.body.addEventListener('DOMNodeInserted', () => setTimeout(removeAdFn));
+    }
+})();
